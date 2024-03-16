@@ -4,10 +4,10 @@ import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:tez_projesi_android/components/button_component.dart';
 import 'package:tez_projesi_android/components/dot_component.dart';
 import 'package:tez_projesi_android/constants/colors.dart';
-import 'package:tez_projesi_android/pages/promo_page2.dart';
+import 'package:tez_projesi_android/pages/login_page.dart';
 
-class PromoPage1 extends StatelessWidget {
-  const PromoPage1({super.key});
+class PromoPage4 extends StatelessWidget {
+  const PromoPage4({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -45,14 +45,14 @@ class PromoPage1 extends StatelessWidget {
                   height: 48,
                 ),
                 Image.asset(
-                  "assets/illustrations/Promo1.png",
+                  "assets/illustrations/Promo4.png",
                   width: MediaQuery.of(context).size.width - 100,
                 ),
                 SizedBox(
                   height: 16,
                 ),
                 Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: RichText(
                       textAlign: TextAlign.center,
                       text: TextSpan(
@@ -62,52 +62,64 @@ class PromoPage1 extends StatelessWidget {
                           color: TWColors.gray.shade800, // Genel metin rengi
                         ),
                         children: <TextSpan>[
-                          const TextSpan(
-                            text: "Yeni ",
+                          TextSpan(
+                            text: "Kendi evinin ",
                             style: TextStyle(
-                              color: CustomColors.primary,
-                            ), // "Yeni" kelimesi için farklı renk
+                              color: TWColors.gray.shade800,
+                            ),
                           ),
                           TextSpan(
-                              text:
-                                  "yemekler ve insanlar keşfet, kendini yemek dünyasında geliştir!",
-                              style: TextStyle(color: TWColors.gray.shade800)),
+                              text: "şefi ",
+                              style: TextStyle(color: CustomColors.primary)),
+                          TextSpan(
+                            text: "olmaya hazır mısın?",
+                            style: TextStyle(
+                              color: TWColors.gray.shade800,
+                            ),
+                          ),
                         ],
                       ),
                     )),
+                    SizedBox(height: 8,),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Text("Yeni lezzetlere adım atmak için kayıt ol! Ya da hesabın varsa giriş yap!", style: TextStyle(
+                        color: TWColors.gray.shade600,
+                        fontSize: 12,
+                      ),
+                      textAlign: TextAlign.center,),
+                    ),
                 const SizedBox(
                   height: 50,
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 50),
-                  child: ButtonComponent(
-                    label: "Sonraki",
-                    block: true,
-                    type: ButtonType.primary,
-                    size: ButtonSize.xl,
-                    onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const PromoPage2())),
+                  child: Column(
+                    children: [
+                      ButtonComponent(
+                        label: "Kayıt Ol",
+                        block: true,
+                        type: ButtonType.primary,
+                        size: ButtonSize.xl,
+                        onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const PromoPage4())),
+                      ),
+                      SizedBox(height: 8,),
+                      ButtonComponent(
+                        label: "Giriş Yap",
+                        block: true,
+                        type: ButtonType.secondary,
+                        size: ButtonSize.xl,
+                        onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const LoginPage())),
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(
-                  height: 36,
-                ),
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    DotComponent(size: 8, filled: true),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    DotComponent(size: 8, filled: false),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    DotComponent(size: 8, filled: false),
-                  ],
-                )
               ],
             ),
           ),

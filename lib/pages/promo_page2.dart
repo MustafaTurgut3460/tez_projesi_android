@@ -4,10 +4,10 @@ import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:tez_projesi_android/components/button_component.dart';
 import 'package:tez_projesi_android/components/dot_component.dart';
 import 'package:tez_projesi_android/constants/colors.dart';
-import 'package:tez_projesi_android/pages/promo_page2.dart';
+import 'package:tez_projesi_android/pages/promo_page3.dart';
 
-class PromoPage1 extends StatelessWidget {
-  const PromoPage1({super.key});
+class PromoPage2 extends StatelessWidget {
+  const PromoPage2({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -45,12 +45,10 @@ class PromoPage1 extends StatelessWidget {
                   height: 48,
                 ),
                 Image.asset(
-                  "assets/illustrations/Promo1.png",
+                  "assets/illustrations/Promo2.png",
                   width: MediaQuery.of(context).size.width - 100,
                 ),
-                SizedBox(
-                  height: 16,
-                ),
+                SizedBox(height: 16,),
                 Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: RichText(
@@ -62,16 +60,21 @@ class PromoPage1 extends StatelessWidget {
                           color: TWColors.gray.shade800, // Genel metin rengi
                         ),
                         children: <TextSpan>[
-                          const TextSpan(
-                            text: "Yeni ",
+                          TextSpan(
+                            text: "Elindeki yemekleri ",
                             style: TextStyle(
-                              color: CustomColors.primary,
-                            ), // "Yeni" kelimesi için farklı renk
+                              color: TWColors.gray.shade800,
+                            ),
                           ),
                           TextSpan(
-                              text:
-                                  "yemekler ve insanlar keşfet, kendini yemek dünyasında geliştir!",
-                              style: TextStyle(color: TWColors.gray.shade800)),
+                              text: "ziyan etme, ",
+                              style: TextStyle(color: CustomColors.primary)),
+                          TextSpan(
+                            text: "asistanına sor ve yeni lezzetler üret!",
+                            style: TextStyle(
+                              color: TWColors.gray.shade800,
+                            ),
+                          ),
                         ],
                       ),
                     )),
@@ -88,7 +91,7 @@ class PromoPage1 extends StatelessWidget {
                     onPressed: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const PromoPage2())),
+                            builder: (context) => const PromoPage3())),
                   ),
                 ),
                 const SizedBox(
@@ -97,11 +100,11 @@ class PromoPage1 extends StatelessWidget {
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    DotComponent(size: 8, filled: true),
+                    DotComponent(size: 8, filled: false),
                     SizedBox(
                       width: 8,
                     ),
-                    DotComponent(size: 8, filled: false),
+                    DotComponent(size: 8, filled: true),
                     SizedBox(
                       width: 8,
                     ),

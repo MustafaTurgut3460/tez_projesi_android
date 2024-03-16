@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:tez_projesi_android/constants/colors.dart';
 
-enum ButtonType { primary, defaultType, text, link }
+enum ButtonType { primary, secondary, defaultType, text, link }
 
 enum ButtonSize { xs, sm, md, lg, xl, xxl }
 
@@ -26,7 +26,7 @@ class ButtonComponent extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(6)),
-          color: type == ButtonType.primary ? CustomColors.primary : Colors.white,
+          color: type == ButtonType.primary ? CustomColors.primary : type == ButtonType.secondary ? CustomColors.primaryLight : Colors.white,
           border: type == ButtonType.defaultType
               ? Border.all(
                   width: 2,
@@ -35,9 +35,9 @@ class ButtonComponent extends StatelessWidget {
               : null,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: CustomColors.primaryLight.withOpacity(0.1),
               spreadRadius: 1,
-              blurRadius: 5,
+              blurRadius: 12,
               offset: Offset(0, 3),
             ),
           ],
@@ -51,7 +51,7 @@ class ButtonComponent extends StatelessWidget {
             fontSize: size == ButtonSize.xs ? 8 : size == ButtonSize.sm ? 10 : size == ButtonSize.md ? 14 : size == ButtonSize.lg ? 16 : size == ButtonSize.xl ? 18 : 20, 
             color: type == ButtonType.primary
                 ? Colors.white
-                : type == ButtonType.defaultType
+                : type == ButtonType.secondary ? CustomColors.primary : type == ButtonType.defaultType
                     ? TWColors.gray.shade400
                     : type == ButtonType.text
                         ? CustomColors.primary
