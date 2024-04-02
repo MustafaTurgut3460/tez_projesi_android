@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tez_projesi_android/pages/login_page.dart';
-import 'package:tez_projesi_android/services/general/http_service.dart';
+import 'package:tez_projesi_android/pages/email_confirm_page.dart';
 
 void main() {
   runApp(const MainApp());
@@ -15,7 +14,7 @@ class MainApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: "Poppins"
       ),
-      home: const LoginPage(),
+      home: const EmailConfirmPage(),
     );
   }
 }

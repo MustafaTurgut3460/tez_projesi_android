@@ -25,7 +25,7 @@ class ButtonComponent extends StatelessWidget {
       onTap: onPressed,
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(6)),
+          borderRadius: BorderRadius.all(Radius.circular(8)),
           color: type == ButtonType.primary ? CustomColors.primary : type == ButtonType.secondary ? CustomColors.primaryLight : Colors.white,
           border: type == ButtonType.defaultType
               ? Border.all(

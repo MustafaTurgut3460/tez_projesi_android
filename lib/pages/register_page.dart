@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/zondicons.dart';
@@ -6,17 +8,17 @@ import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:tez_projesi_android/components/button_component.dart';
 import 'package:tez_projesi_android/components/input_component.dart';
 import 'package:tez_projesi_android/constants/colors.dart';
+import 'package:tez_projesi_android/pages/login_page.dart';
 import 'package:tez_projesi_android/pages/promo_page4.dart';
-import 'package:tez_projesi_android/pages/register_page.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController controller = TextEditingController();
 
   @override
@@ -31,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(32.0),
+          padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 4),
           child: Center(
             child: SingleChildScrollView(
               child: Column(
@@ -44,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
                   Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 0),
                       child: Text(
-                        "Giriş Yap",
+                        "Kayıt Ol",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             color: TW3Colors.gray.shade900, fontSize: 24),
@@ -55,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 0),
                     child: Text(
-                      "Uygulamaya devam etmek için lütfen giriş yapınız",
+                      "Uygulamaya devam etmek için lütfen kayıt olunuz",
                       style: TextStyle(
                         color: TWColors.gray.shade600,
                         fontSize: 12,
@@ -66,30 +68,47 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(
                     height: 20,
                   ),
+                  const Row(
+                    children: [
+                      Expanded(
+                        child: InputComponent(
+                          hintText: "Adınız",
+                          icon: FontAwesomeIcons.user,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 12,
+                      ),
+                      Expanded(
+                        child: InputComponent(
+                          hintText: "Soyadınız",
+                          icon: FontAwesomeIcons.user,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   const InputComponent(
                     hintText: "Emailinizi giriniz",
                     icon: FontAwesomeIcons.envelope,
                   ),
-                  // TextField(
-                  //   decoration: buildTextFieldStyle(),
-                  // ),
                   const SizedBox(
                     height: 10,
                   ),
                   const InputComponent(
                     hintText: "Parolanızı giriniz",
                     icon: FontAwesomeIcons.lock,
+                    isPassword: true,
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 10,
                   ),
-                  InkWell(
-                    onTap: () {},
-                    child: Text(
-                      "Şifreni mi Unuttun?",
-                      style: TextStyle(
-                          color: TW3Colors.gray.shade500, fontSize: 14),
-                    ),
+                  const InputComponent(
+                    hintText: "Parolanızı tekrar giriniz",
+                    icon: FontAwesomeIcons.lock,
+                    isPassword: true,
                   ),
                   const SizedBox(
                     height: 30,
@@ -97,13 +116,14 @@ class _LoginPageState extends State<LoginPage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 0),
                     child: ButtonComponent(
-                      label: "Giriş Yap",
+                      label: "Kayıt Ol",
                       block: true,
                       type: ButtonType.primary,
                       size: ButtonSize.xl,
-                      onPressed: () => {
-                        // login islemleri
-                      }
+                      onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const PromoPage4())),
                     ),
                   ),
                   const SizedBox(
@@ -113,7 +133,7 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Henüz bir hesabın yok mu?",
+                        "Zaten bir hesabın var mı?",
                         style: TextStyle(
                             color: TW3Colors.gray.shade400, fontSize: 12),
                       ),
@@ -121,14 +141,12 @@ class _LoginPageState extends State<LoginPage> {
                         width: 4,
                       ),
                       InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const RegisterPage()));
-                        },
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const LoginPage())),
                         child: const Text(
-                          "Hemen Oluştur!",
+                          "Hemen Giriş Yap!",
                           style: TextStyle(
                             color: CustomColors.primary,
                             fontSize: 12,

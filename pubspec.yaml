@@ -11,6 +11,7 @@ dependencies:
     sdk: flutter
   font_awesome_flutter: ^10.7.0
   http: ^0.13.3
+  iconify_flutter: ^0.0.5
   tailwind_colors: ^0.3.1
 
 dev_dependencies:
