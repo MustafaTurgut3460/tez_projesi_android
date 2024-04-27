@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:tez_projesi_android/components/button_component.dart';
-import 'package:tez_projesi_android/components/dot_component.dart';
 import 'package:tez_projesi_android/constants/colors.dart';
 import 'package:tez_projesi_android/pages/login_page.dart';
 
@@ -20,7 +19,7 @@ class PromoPage4 extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 24,
                 ),
                 Row(
@@ -31,7 +30,7 @@ class PromoPage4 extends StatelessWidget {
                       "Tanıtımı Geç",
                       style: TextStyle(color: TWColors.gray.shade500),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 8,
                     ),
                     FaIcon(
@@ -41,14 +40,14 @@ class PromoPage4 extends StatelessWidget {
                     )
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 48,
                 ),
                 Image.asset(
                   "assets/illustrations/Promo4.png",
                   width: MediaQuery.of(context).size.width - 100,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 16,
                 ),
                 Padding(
@@ -68,7 +67,7 @@ class PromoPage4 extends StatelessWidget {
                               color: TWColors.gray.shade800,
                             ),
                           ),
-                          TextSpan(
+                          const TextSpan(
                               text: "şefi ",
                               style: TextStyle(color: CustomColors.primary)),
                           TextSpan(
@@ -80,7 +79,7 @@ class PromoPage4 extends StatelessWidget {
                         ],
                       ),
                     )),
-                    SizedBox(height: 8,),
+                    const SizedBox(height: 8,),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Text("Yeni lezzetlere adım atmak için kayıt ol! Ya da hesabın varsa giriş yap!", style: TextStyle(
@@ -106,7 +105,7 @@ class PromoPage4 extends StatelessWidget {
                             MaterialPageRoute(
                                 builder: (context) => const PromoPage4())),
                       ),
-                      SizedBox(height: 8,),
+                      const SizedBox(height: 8,),
                       ButtonComponent(
                         label: "Giriş Yap",
                         block: true,

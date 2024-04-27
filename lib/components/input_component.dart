@@ -8,14 +8,15 @@ class InputComponent extends StatelessWidget {
   final String? hintText;
   final IconData? icon;
   final bool? isPassword;
-  const InputComponent({super.key, this.hintText, this.icon, this.isPassword = false});
+  final Color? bgColor;
+  const InputComponent({super.key, this.hintText, this.icon, this.isPassword = false, this.bgColor});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(
-        color: TW3Colors.gray.shade200,
+        color: bgColor ?? TW3Colors.gray.shade200,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(

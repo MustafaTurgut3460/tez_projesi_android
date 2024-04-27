@@ -1,9 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:iconify_flutter/iconify_flutter.dart';
-import 'package:iconify_flutter/icons/zondicons.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:tez_projesi_android/components/button_component.dart';
 import 'package:tez_projesi_android/components/input_component.dart';

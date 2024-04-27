@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:iconify_flutter/iconify_flutter.dart';
-import 'package:iconify_flutter/icons/zondicons.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:tez_projesi_android/components/button_component.dart';
 import 'package:tez_projesi_android/components/input_component.dart';
 import 'package:tez_projesi_android/constants/colors.dart';
-import 'package:tez_projesi_android/pages/promo_page4.dart';
 import 'package:tez_projesi_android/pages/register_page.dart';
 
 class LoginPage extends StatefulWidget {

@@ -7,8 +7,10 @@ environment:
   sdk: '>=3.3.0 <4.0.0'
 
 dependencies:
+  flashy_tab_bar2: ^0.0.10
   flutter:
     sdk: flutter
+  flutter_svg: ^1.1.6
   font_awesome_flutter: ^10.7.0
   http: ^0.13.3
   iconify_flutter: ^0.0.5
@@ -28,3 +30,5 @@ flutter:
   assets:
     - assets/images/
     - assets/illustrations/
+    - assets/icons/
+    - assets/animations/
