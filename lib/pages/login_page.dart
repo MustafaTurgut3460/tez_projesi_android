@@ -4,7 +4,11 @@ import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:tez_projesi_android/components/button_component.dart';
 import 'package:tez_projesi_android/components/input_component.dart';
 import 'package:tez_projesi_android/constants/colors.dart';
+import 'package:tez_projesi_android/helpers/toast_helper.dart';
 import 'package:tez_projesi_android/pages/register_page.dart';
+import 'package:tez_projesi_android/services/endpoints.dart';
+import 'package:tez_projesi_android/services/general/http_service.dart';
+import 'package:toastification/toastification.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -14,13 +18,49 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController controller = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final toaster = ToastHelper();
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    controller.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  Future<void> submitLogin() async {
+    String email = emailController.text;
+    String password = passwordController.text;
+
+    if (email.isEmpty || password.isEmpty) {
+      toaster.show("Hatalı Giriş", "Lütfen tüm birimleri doldurunuz",
+          ToastificationType.warning, context);
+    }
+
+    final httpService = HttpService();
+    final data = {
+      "email": email,
+      "password": password
+    };
+
+    final response = await httpService
+        .post(Endpoints.login(), data);
+
+    if(!response.status){
+      toaster.show("Hata", response.body.messages[0], ToastificationType.error, context);
+    }
+    else{
+      // kullaniciyi iceri al ve tokeni kaydet
+      
+    }
   }
 
   @override
@@ -63,9 +103,10 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(
                     height: 20,
                   ),
-                  const InputComponent(
+                  InputComponent(
                     hintText: "Emailinizi giriniz",
                     icon: FontAwesomeIcons.envelope,
+                    controller: emailController,
                   ),
                   // TextField(
                   //   decoration: buildTextFieldStyle(),
@@ -73,9 +114,11 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(
                     height: 10,
                   ),
-                  const InputComponent(
+                  InputComponent(
                     hintText: "Parolanızı giriniz",
                     icon: FontAwesomeIcons.lock,
+                    isPassword: true,
+                    controller: passwordController,
                   ),
                   const SizedBox(
                     height: 20,
@@ -94,14 +137,14 @@ class _LoginPageState extends State<LoginPage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 0),
                     child: ButtonComponent(
-                      label: "Giriş Yap",
-                      block: true,
-                      type: ButtonType.primary,
-                      size: ButtonSize.xl,
-                      onPressed: () => {
-                        // login islemleri
-                      }
-                    ),
+                        label: "Giriş Yap",
+                        block: true,
+                        type: ButtonType.primary,
+                        size: ButtonSize.xl,
+                        onPressed: () => {
+                              // login islemleri
+                              submitLogin()
+                            }),
                   ),
                   const SizedBox(
                     height: 8,

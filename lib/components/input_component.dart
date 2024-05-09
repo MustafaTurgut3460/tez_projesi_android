@@ -9,7 +9,8 @@ class InputComponent extends StatelessWidget {
   final IconData? icon;
   final bool? isPassword;
   final Color? bgColor;
-  const InputComponent({super.key, this.hintText, this.icon, this.isPassword = false, this.bgColor});
+  final TextEditingController? controller;
+  const InputComponent({super.key, this.hintText, this.icon, this.isPassword = false, this.bgColor, this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +36,7 @@ class InputComponent extends StatelessWidget {
           Expanded(
             child: TextField(
               style: const TextStyle(fontSize: 14),
+              controller: controller,
               decoration: InputDecoration(
                   hintText: hintText,
                   border: InputBorder.none,

@@ -11,10 +11,12 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_svg: ^1.1.6
+  fluttertoast: ^8.2.5
   font_awesome_flutter: ^10.7.0
   http: ^0.13.3
   iconify_flutter: ^0.0.5
   tailwind_colors: ^0.3.1
+  toastification: ^2.0.0
 
 dev_dependencies:
   flutter_test:

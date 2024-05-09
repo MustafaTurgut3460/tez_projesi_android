@@ -3,14 +3,14 @@ import 'package:http/http.dart' as http;
 import 'package:tez_projesi_android/types/response_type.dart';
 
 class HttpService {
-  final String baseUrl = "";
+  final String baseUrl = "https://apposite.live/api/";
   final Map<String, String> header = {"Content-Type": "application/json"};
 
   Future<ResponseType> get(String url) async {
     try {
       final response =
           await http.get(Uri.parse(baseUrl + url), headers: header);
-      return ResponseType(body: jsonDecode(response.body), statusCode: response.statusCode);
+      return ResponseType(body: jsonDecode(response.body), status: response.statusCode == 200);
     } catch (e) {
       throw Exception(e.toString());
     }
@@ -23,8 +23,8 @@ class HttpService {
         header.addAll(config);
       }
       final response = await http
-          .post(Uri.parse(baseUrl + url), body: body, headers: header);
-      return ResponseType(body: jsonDecode(response.body), statusCode: response.statusCode);
+          .post(Uri.parse(baseUrl + url), body: jsonEncode(body), headers: header);
+      return ResponseType(body: jsonDecode(response.body), status: response.statusCode == 201 || response.statusCode == 200 || response.statusCode == 204);
     } catch (e) {
       throw Exception(e.toString());
     }
@@ -37,8 +37,8 @@ class HttpService {
         header.addAll(config);
       }
       final response = await http
-          .put(Uri.parse(baseUrl + url), body: body, headers: header);
-      return ResponseType(body: jsonDecode(response.body), statusCode: response.statusCode);
+          .put(Uri.parse(baseUrl + url), body: jsonEncode(body), headers: header);
+      return ResponseType(body: jsonDecode(response.body), status: response.statusCode == 200 || response.statusCode == 204);
     } catch (e) {
       throw Exception(e.toString());
     }
@@ -48,7 +48,7 @@ class HttpService {
     try {
       final response =
           await http.delete(Uri.parse(baseUrl + url), headers: header);
-      return ResponseType(body: jsonDecode(response.body), statusCode: response.statusCode);
+      return ResponseType(body: jsonDecode(response.body), status: response.statusCode == 200 || response.statusCode == 204);
     } catch (e) {
       throw Exception(e.toString());
     }

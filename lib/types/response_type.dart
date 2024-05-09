@@ -1,6 +1,6 @@
 class ResponseType {
   final dynamic body;
-  final int statusCode;
+  final bool status;
 
-  ResponseType({required this.body, required this.statusCode});
+  ResponseType({required this.body, required this.status});
 }

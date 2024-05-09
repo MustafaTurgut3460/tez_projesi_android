@@ -1,14 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:tez_projesi_android/pages/email_confirm_page.dart';
-import 'package:tez_projesi_android/pages/main_page.dart';
-import 'package:tez_projesi_android/pages/register_page_1.dart';
+import 'package:tez_projesi_android/pages/login_page.dart';
+import 'package:toastification/toastification.dart';
 
 void main() {
   runApp(const MainApp());
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends StatefulWidget {
   const MainApp({super.key});
+
+  @override
+  State<MainApp> createState() => _MainAppState();
+}
+
+class _MainAppState extends State<MainApp> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +27,7 @@ class MainApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: "Poppins"
       ),
-      home: const MainPage(),
+      home: const LoginPage(),
     );
   }
 }
