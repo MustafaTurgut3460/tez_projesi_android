@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tez_projesi_android/pages/login_page.dart';
+import 'package:tez_projesi_android/pages/register_page.dart';
 import 'package:toastification/toastification.dart';
 
 void main() {

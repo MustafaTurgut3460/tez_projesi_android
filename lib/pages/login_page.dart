@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
@@ -5,9 +7,12 @@ import 'package:tez_projesi_android/components/button_component.dart';
 import 'package:tez_projesi_android/components/input_component.dart';
 import 'package:tez_projesi_android/constants/colors.dart';
 import 'package:tez_projesi_android/helpers/toast_helper.dart';
+import 'package:tez_projesi_android/pages/main_page.dart';
 import 'package:tez_projesi_android/pages/register_page.dart';
+import 'package:tez_projesi_android/pages/register_page_1.dart';
 import 'package:tez_projesi_android/services/endpoints.dart';
 import 'package:tez_projesi_android/services/general/http_service.dart';
+import 'package:tez_projesi_android/services/general/storage_service.dart';
 import 'package:toastification/toastification.dart';
 
 class LoginPage extends StatefulWidget {
@@ -21,6 +26,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final toaster = ToastHelper();
+  bool loginLoading = false;
 
   @override
   void dispose() {
@@ -31,9 +37,26 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
-  void initState() {
+  Future<void> initState() async {
     // TODO: implement initState
     super.initState();
+    StorageService.getToken().then((value) => {
+          if (value != "")
+            {
+              StorageService.getData("is-registered").then((value) => {
+                    if (value != null)
+                      {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const MainPage()))
+                      }
+                    else
+                      {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const RegisterPage1()))
+                      }
+                  })
+            }
+        });
   }
 
   Future<void> submitLogin() async {
@@ -46,20 +69,33 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     final httpService = HttpService();
-    final data = {
-      "email": email,
-      "password": password
-    };
+    final data = {"email": email, "password": password};
 
-    final response = await httpService
-        .post(Endpoints.login(), data);
+    setState(() {
+      loginLoading = true;
+    });
 
-    if(!response.status){
-      toaster.show("Hata", response.body.messages[0], ToastificationType.error, context);
-    }
-    else{
+    final response = await httpService.post(Endpoints.login(), data);
+
+    if (!response.status) {
+      toaster.show("Hata", response.body["messages"][0],
+          ToastificationType.error, context);
+    } else {
       // kullaniciyi iceri al ve tokeni kaydet
-      
+      final token = response.body["data"]["token"];
+      await StorageService.saveToken(token);
+
+      setState(() {
+        loginLoading = false;
+      });
+
+      toaster.show(
+          "Giriş Başarılı",
+          "Giriş yapma işlemi başarıyla gerçekleştirildi",
+          ToastificationType.success,
+          context);
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => const MainPage()));
     }
   }
 
@@ -137,14 +173,16 @@ class _LoginPageState extends State<LoginPage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 0),
                     child: ButtonComponent(
-                        label: "Giriş Yap",
-                        block: true,
-                        type: ButtonType.primary,
-                        size: ButtonSize.xl,
-                        onPressed: () => {
-                              // login islemleri
-                              submitLogin()
-                            }),
+                      label: "Giriş Yap",
+                      block: true,
+                      type: ButtonType.primary,
+                      size: ButtonSize.xl,
+                      onPressed: () => {
+                        // login islemleri
+                        submitLogin()
+                      },
+                      loading: loginLoading,
+                    ),
                   ),
                   const SizedBox(
                     height: 8,

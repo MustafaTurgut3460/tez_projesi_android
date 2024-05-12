@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
@@ -5,7 +7,11 @@ import 'package:tez_projesi_android/components/button_component.dart';
 import 'package:tez_projesi_android/components/chip_component.dart';
 import 'package:tez_projesi_android/components/input_component.dart';
 import 'package:tez_projesi_android/constants/colors.dart';
+import 'package:tez_projesi_android/models/health_item.dart';
 import 'package:tez_projesi_android/pages/register_page_3.dart';
+import 'package:tez_projesi_android/services/endpoints.dart';
+import 'package:tez_projesi_android/services/general/http_service.dart';
+import 'package:tez_projesi_android/services/general/storage_service.dart';
 
 class RegisterPage2 extends StatefulWidget {
   const RegisterPage2({super.key});
@@ -15,10 +21,69 @@ class RegisterPage2 extends StatefulWidget {
 }
 
 class _RegisterPage2State extends State<RegisterPage2> {
+  var healthList = List<HealthItem>.empty();
+  var selectedHealthList = List<HealthItem>.empty();
+  var displayList = List<HealthItem>.empty();
+  final httpService = HttpService();
+  final _searchController = TextEditingController();
+  Timer? _debounce;
+
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
+    _searchController.dispose();
+    _debounce?.cancel();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    _searchController.addListener(_onSearchChanged);
+
+    getHealts().then((value) => {
+          setState(() {
+            healthList = value;
+          })
+        });
+  }
+
+  void _onSearchChanged() {
+    if (_searchController.text.length > 2) {
+      if (_debounce?.isActive ?? false) _debounce?.cancel();
+      _debounce = Timer(const Duration(milliseconds: 500), () {
+        getHealts(searchText: _searchController.text).then((value) => {
+              setState(() {
+                healthList = value;
+              })
+            });
+      });
+
+      setState(() {
+        displayList = healthList;
+      });
+    } else {
+      setState(() {
+        displayList = selectedHealthList;
+      });
+    }
+  }
+
+  Future<List<HealthItem>> getHealts(
+      {String? searchText, int? page, int? pageSize}) async {
+    final response = await httpService.get(Endpoints.getHealts(
+        searchText: searchText, page: page, pageSize: pageSize));
+
+    if (response.status) {
+      var list = response.body['data'] as List;
+      List<HealthItem> dataList =
+          list.map((i) => HealthItem.fromJson(i)).toList();
+
+      return dataList;
+    }
+
+    return List<HealthItem>.empty();
   }
 
   @override
@@ -85,29 +150,58 @@ class _RegisterPage2State extends State<RegisterPage2> {
                   hintText: "Diyet Arayın...",
                   icon: FontAwesomeIcons.search,
                   bgColor: TW3Colors.gray.shade100,
+                  controller: _searchController,
                 ),
                 const SizedBox(
                   height: 24,
                 ),
-                const Wrap(
+                Wrap(
                   runAlignment: WrapAlignment.spaceBetween,
                   spacing: 8,
                   runSpacing: 8,
                   children: [
-                    ChipComponent(isSelected: true, text: "Vegan"),
-                    ChipComponent(isSelected: false, text: "Çölyak"),
-                    ChipComponent(isSelected: false, text: "Helal Gıda"),
-                    ChipComponent(isSelected: false, text: "Vejeteryan"),
-                    ChipComponent(isSelected: false, text: "Laktoz İntöleransı"),
+                    Wrap(
+                      runAlignment: WrapAlignment.spaceBetween,
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: displayList.map((healthItem) {
+                        return InkWell(
+                          onTap: () => {
+                            setState(() {
+                              healthItem.isSelected = !healthItem.isSelected;
+                              selectedHealthList = [
+                                ...selectedHealthList,
+                                healthItem
+                              ];
+                            })
+                          },
+                          child: ChipComponent(
+                              isSelected: healthItem.isSelected,
+                              text: healthItem.name),
+                        );
+                      }).toList(),
+                    )
                   ],
                 ),
-                const SizedBox(height: 80,),
-                ButtonComponent(label: "Sonraki Adım", block: true, size: ButtonSize.lg, onPressed: () {
-                  Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const RegisterPage3()));
-                },)
+                const SizedBox(
+                  height: 80,
+                ),
+                ButtonComponent(
+                  label: "Sonraki Adım",
+                  block: true,
+                  size: ButtonSize.lg,
+                  onPressed: () async {
+                    var data = selectedHealthList.map((e) => e.id).toList();
+
+                    final res = await httpService
+                        .post(Endpoints.addUserInfo(), {"healts": data});
+
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const RegisterPage3()));
+                  },
+                )
               ],
             ),
           ),
