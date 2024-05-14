@@ -32,4 +32,14 @@ class Endpoints {
     var queryString = Uri(queryParameters: queryParams).query;
     return "CuisinePreference/get?$queryString";
   }
+
+  static String getRecipes({String? searchText, int? page, int? pageSize}) {
+    var queryParams = <String, dynamic>{};
+    if (searchText != null) queryParams['SearchText'] = searchText;
+    if (page != null) queryParams['Page'] = page;
+    if (pageSize != null) queryParams['PageSize'] = pageSize;
+
+    var queryString = Uri(queryParameters: queryParams).query;
+    return "Recipe/get?$queryString";
+  }
 }

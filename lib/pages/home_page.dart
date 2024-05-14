@@ -4,6 +4,10 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:tez_projesi_android/constants/colors.dart';
+import 'package:tez_projesi_android/models/recipe.dart';
+import 'package:tez_projesi_android/pages/recipe_detail_page.dart';
+import 'package:tez_projesi_android/services/endpoints.dart';
+import 'package:tez_projesi_android/services/general/http_service.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,10 +17,40 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final httpService = HttpService();
+  List<Recipe> recipeList = List<Recipe>.empty();
+
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    getRecipes().then((value) => {
+          setState(() {
+            recipeList = value;
+          })
+        });
+  }
+
+  Future<List<Recipe>> getRecipes(
+      {String? searchText, int? page, int? pageSize}) async {
+    final response = await httpService.get(Endpoints.getRecipes(
+        searchText: searchText, page: page, pageSize: pageSize));
+
+    if (response.status) {
+      var list = response.body['data'] as List;
+      List<Recipe> dataList = list.map((i) => Recipe.fromJson(i)).toList();
+
+      return dataList;
+    }
+
+    return List<Recipe>.empty();
   }
 
   @override
@@ -145,11 +179,14 @@ class _HomePageState extends State<HomePage> {
               Container(
                 width: MediaQuery.of(context).size.width,
                 height: 200,
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  image: const DecorationImage(
-                    image: AssetImage("assets/images/food4.png"),
+                  image: DecorationImage(
+                    image: NetworkImage(
+                        recipeList.isNotEmpty ? recipeList[0].imageUrl : ""),
+                    opacity: 0.9,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -161,11 +198,11 @@ class _HomePageState extends State<HomePage> {
                       "Haftanın Yemeği",
                       style: TextStyle(color: Colors.white, fontSize: 15),
                     ),
-                    const Opacity(
-                      opacity: 0.7,
+                    Opacity(
+                      opacity: 0.8,
                       child: Text(
-                        "Lorem ipsum dolor sit amet consectetur. Risus amet fermentum quis felis.",
-                        style: TextStyle(
+                        recipeList.isNotEmpty ? recipeList[0].title : "",
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 12,
                         ),
@@ -185,11 +222,14 @@ class _HomePageState extends State<HomePage> {
                         const SizedBox(
                           width: 4,
                         ),
-                        const Opacity(
+                        Opacity(
                           opacity: 0.7,
                           child: Text(
-                            "Mustafa Turgut",
-                            style: TextStyle(color: Colors.white, fontSize: 12),
+                            recipeList.isNotEmpty
+                                ? recipeList[0].user.name
+                                : "",
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 12),
                           ),
                         ),
                       ],
@@ -232,30 +272,12 @@ class _HomePageState extends State<HomePage> {
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: [
-                    buildFoodComponent("assets/images/food2.png", "Yemek 1"),
-                    const SizedBox(
-                      width: 12,
-                    ),
-                    buildFoodComponent("assets/images/food2.png", "Yemek 1"),
-                    const SizedBox(
-                      width: 12,
-                    ),
-                    buildFoodComponent("assets/images/food2.png", "Yemek 1"),
-                    const SizedBox(
-                      width: 12,
-                    ),
-                    buildFoodComponent("assets/images/food2.png", "Yemek 1"),
-                    const SizedBox(
-                      width: 12,
-                    ),
-                    buildFoodComponent("assets/images/food2.png", "Yemek 1"),
-                    const SizedBox(
-                      width: 12,
-                    ),
-                    buildFoodComponent("assets/images/food2.png", "Yemek 1"),
-                    const SizedBox(
-                      width: 12,
-                    ),
+                    for (int i = 0; i < recipeList.length; i++) ...[
+                      buildFoodComponent(
+                        recipeList[i],
+                      ),
+                      if (i != recipeList.length - 1) const SizedBox(width: 8),
+                    ]
                   ],
                 ),
               ),
@@ -291,30 +313,12 @@ class _HomePageState extends State<HomePage> {
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: [
-                    buildFoodComponent("assets/images/food2.png", "Yemek 1"),
-                    const SizedBox(
-                      width: 12,
-                    ),
-                    buildFoodComponent("assets/images/food2.png", "Yemek 1"),
-                    const SizedBox(
-                      width: 12,
-                    ),
-                    buildFoodComponent("assets/images/food2.png", "Yemek 1"),
-                    const SizedBox(
-                      width: 12,
-                    ),
-                    buildFoodComponent("assets/images/food2.png", "Yemek 1"),
-                    const SizedBox(
-                      width: 12,
-                    ),
-                    buildFoodComponent("assets/images/food2.png", "Yemek 1"),
-                    const SizedBox(
-                      width: 12,
-                    ),
-                    buildFoodComponent("assets/images/food2.png", "Yemek 1"),
-                    const SizedBox(
-                      width: 12,
-                    ),
+                    for (int i = 0; i < recipeList.length; i++) ...[
+                      buildFoodComponent(
+                        recipeList[i],
+                      ),
+                      if (i != recipeList.length - 1) const SizedBox(width: 8),
+                    ]
                   ],
                 ),
               ),
@@ -385,22 +389,33 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget buildFoodComponent(String asset, String title) {
-    return Column(
-      children: [
-        Image.asset(
-          asset,
-          width: 64,
-          height: 64,
-        ),
-        const SizedBox(
-          height: 4,
-        ),
-        Text(
-          title,
-          style: TextStyle(fontSize: 12, color: TW3Colors.gray.shade500),
-        )
-      ],
+  Widget buildFoodComponent(Recipe recipe) {
+    return InkWell(
+      onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => RecipesDetailPage(recipe: recipe))),
+      child: Column(
+        children: [
+          ClipRRect(
+            borderRadius:
+                BorderRadius.circular(4), // Resmin köşelerini yuvarlamak için
+            child: Image.network(
+              recipe.imageUrl,
+              height: 48,
+              width: 64,
+              fit: BoxFit.cover, // Resmi kutuya sığdırmak için
+            ),
+          ),
+          const SizedBox(
+            height: 4,
+          ),
+          Text(
+            "${recipe.title.substring(0, 10)}...",
+            style: TextStyle(fontSize: 12, color: TW3Colors.gray.shade500),
+          )
+        ],
+      ),
     );
   }
 
