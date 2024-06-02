@@ -48,7 +48,7 @@ class Cuisine {
   String name;
   String description;
 
-   Cuisine({
+  Cuisine({
     required this.id,
     required this.name,
     required this.description,

@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:tez_projesi_android/constants/colors.dart';
 import 'package:tez_projesi_android/models/recipe.dart';
+import 'package:tez_projesi_android/pages/login_page.dart';
 import 'package:tez_projesi_android/pages/recipe_detail_page.dart';
 import 'package:tez_projesi_android/services/endpoints.dart';
 import 'package:tez_projesi_android/services/general/http_service.dart';
@@ -48,6 +49,12 @@ class _HomePageState extends State<HomePage> {
       List<Recipe> dataList = list.map((i) => Recipe.fromJson(i)).toList();
 
       return dataList;
+    } else if (response.statusCode == 401) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginPage()),
+        (Route<dynamic> route) => false,
+      );
     }
 
     return List<Recipe>.empty();
@@ -349,39 +356,39 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(
                 height: 6,
               ),
-              SizedBox(
-                height: 100,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    buildCategoryComponent(
-                        "assets/icons/breakfast.png", "Kahvaltı"),
-                    const SizedBox(
-                      width: 12,
-                    ),
-                    buildCategoryComponent(
-                        "assets/icons/breakfast.png", "Kahvaltı"),
-                    const SizedBox(
-                      width: 12,
-                    ),
-                    buildCategoryComponent(
-                        "assets/icons/breakfast.png", "Kahvaltı"),
-                    const SizedBox(
-                      width: 12,
-                    ),
-                    buildCategoryComponent(
-                        "assets/icons/breakfast.png", "Kahvaltı"),
-                    const SizedBox(
-                      width: 12,
-                    ),
-                    buildCategoryComponent(
-                        "assets/icons/breakfast.png", "Kahvaltı"),
-                    const SizedBox(
-                      width: 12,
-                    ),
-                  ],
-                ),
-              ),
+              // SizedBox(
+              //   height: 100,
+              //   child: ListView(
+              //     scrollDirection: Axis.horizontal,
+              //     children: [
+              //       buildCategoryComponent(
+              //           "assets/icons/breakfast.png", "Kahvaltı"),
+              //       const SizedBox(
+              //         width: 12,
+              //       ),
+              //       buildCategoryComponent(
+              //           "assets/icons/breakfast.png", "Kahvaltı"),
+              //       const SizedBox(
+              //         width: 12,
+              //       ),
+              //       buildCategoryComponent(
+              //           "assets/icons/breakfast.png", "Kahvaltı"),
+              //       const SizedBox(
+              //         width: 12,
+              //       ),
+              //       buildCategoryComponent(
+              //           "assets/icons/breakfast.png", "Kahvaltı"),
+              //       const SizedBox(
+              //         width: 12,
+              //       ),
+              //       buildCategoryComponent(
+              //           "assets/icons/breakfast.png", "Kahvaltı"),
+              //       const SizedBox(
+              //         width: 12,
+              //       ),
+              //     ],
+              //   ),
+              // ),
             ],
           ),
         ),
@@ -411,7 +418,7 @@ class _HomePageState extends State<HomePage> {
             height: 4,
           ),
           Text(
-            "${recipe.title.substring(0, 10)}...",
+            "${recipe.title.substring(0, 5)}...",
             style: TextStyle(fontSize: 12, color: TW3Colors.gray.shade500),
           )
         ],

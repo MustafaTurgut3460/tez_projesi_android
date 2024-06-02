@@ -14,13 +14,17 @@ class HttpService {
     };
     header.addAll(authHeader);
 
+    http.Response response = http.Response("", 401);
+
     try {
-      final response =
-          await http.get(Uri.parse(baseUrl + url), headers: header);
+      response = await http.get(Uri.parse(baseUrl + url), headers: header);
       return ResponseType(
-          body: jsonDecode(response.body), status: response.statusCode == 200);
+          body: jsonDecode(response.body),
+          status: response.statusCode == 200,
+          statusCode: response.statusCode);
     } catch (e) {
-      throw Exception(e.toString());
+      return ResponseType(
+          body: {}, status: false, statusCode: response.statusCode);
     }
   }
 
@@ -42,7 +46,8 @@ class HttpService {
           body: jsonDecode(response.body),
           status: response.statusCode == 201 ||
               response.statusCode == 200 ||
-              response.statusCode == 204);
+              response.statusCode == 204,
+          statusCode: response.statusCode);
     } catch (e) {
       throw Exception(e.toString());
     }
@@ -64,7 +69,8 @@ class HttpService {
           body: jsonEncode(body), headers: header);
       return ResponseType(
           body: jsonDecode(response.body),
-          status: response.statusCode == 200 || response.statusCode == 204);
+          status: response.statusCode == 200 || response.statusCode == 204,
+          statusCode: response.statusCode);
     } catch (e) {
       throw Exception(e.toString());
     }
@@ -82,7 +88,8 @@ class HttpService {
           await http.delete(Uri.parse(baseUrl + url), headers: header);
       return ResponseType(
           body: jsonDecode(response.body),
-          status: response.statusCode == 200 || response.statusCode == 204);
+          status: response.statusCode == 200 || response.statusCode == 204,
+          statusCode: response.statusCode);
     } catch (e) {
       throw Exception(e.toString());
     }

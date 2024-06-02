@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tez_projesi_android/pages/login_page.dart';
-import 'package:tez_projesi_android/pages/register_page.dart';
-import 'package:toastification/toastification.dart';
+import 'package:tez_projesi_android/pages/main_page.dart';
 
 void main() {
   runApp(const MainApp());
@@ -15,7 +14,6 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
-
   @override
   void initState() {
     // TODO: implement initState
@@ -25,10 +23,8 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        fontFamily: "Poppins"
-      ),
-      home: const LoginPage(),
+      theme: ThemeData(fontFamily: "Poppins"),
+      home: const MainPage(),
     );
   }
 }

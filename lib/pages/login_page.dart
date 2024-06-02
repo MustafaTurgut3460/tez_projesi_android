@@ -37,7 +37,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
-  Future<void> initState() async {
+  void initState() {
     // TODO: implement initState
     super.initState();
     StorageService.getToken().then((value) => {
