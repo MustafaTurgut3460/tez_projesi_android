@@ -6,6 +6,11 @@ class StorageService {
     prefs.setString("apposite-token", token);
   }
 
+  static Future<void> deleteToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.remove("apposite-token");
+  }
+
   static Future<String> getToken() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString("apposite-token");

@@ -5,6 +5,9 @@ import 'package:tez_projesi_android/components/button_component.dart';
 import 'package:tez_projesi_android/components/input_component.dart';
 import 'package:tez_projesi_android/components/recipe_item.dart';
 import 'package:tez_projesi_android/constants/colors.dart';
+import 'package:tez_projesi_android/models/ai_recipe.dart';
+import 'package:tez_projesi_android/services/endpoints.dart';
+import 'package:tez_projesi_android/services/general/http_service.dart';
 
 class RecipesPage extends StatefulWidget {
   const RecipesPage({super.key});
@@ -14,10 +17,39 @@ class RecipesPage extends StatefulWidget {
 }
 
 class _RecipesPageState extends State<RecipesPage> {
+  var recipeList = List<AiRepcipe>.empty();
+  final httpService = HttpService();
+
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    getAiRecipes().then((value) => {
+          setState(() {
+            recipeList = value;
+          })
+        });
+  }
+
+  Future<List<AiRepcipe>> getAiRecipes() async {
+    final response = await httpService.get(Endpoints.getAiRecipe());
+
+    if (response.status) {
+      var list = response.body['data'] as List;
+      List<AiRepcipe> dataList =
+          list.map((i) => AiRepcipe.fromJson(i)).toList();
+
+      return dataList;
+    }
+
+    return List<AiRepcipe>.empty();
   }
 
   @override
@@ -106,62 +138,44 @@ class _RecipesPageState extends State<RecipesPage> {
             SizedBox(
               height: 20,
             ),
-            Row(
-              children: [
-                Expanded(
-                  child: RecipeItem(
-                      image: "assets/images/food3.png",
-                      title: "Tarif Başlığı",
-                      desc:
-                          "Lorem ipsum dolor sit amet consectetur. Fermentum"),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: RecipeItem(
-                      image: "assets/images/food2.png",
-                      title: "Tarif Başlığı",
-                      desc:
-                          "Lorem ipsum dolor sit amet consectetur. Fermentum"),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: RecipeItem(
-                      image: "assets/images/food3.png",
-                      title: "Tarif Başlığı",
-                      desc:
-                          "Lorem ipsum dolor sit amet consectetur. Fermentum"),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: RecipeItem(
-                      image: "assets/images/food2.png",
-                      title: "Tarif Başlığı",
-                      desc:
-                          "Lorem ipsum dolor sit amet consectetur. Fermentum"),
-                ),
-              ],
-            ),
+            
+            buildRecipeList(),
           ],
         ),
       ),
     ));
+  }
+  
+  Widget buildRecipeList() {
+    if (recipeList.isEmpty) {
+      return Center(child: CircularProgressIndicator());
+    } else {
+      return ListView.builder(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: recipeList.length,
+        itemBuilder: (context, index) {
+          return Column(
+            children: [
+              buildRecipeComponent(recipeList[index]),
+              SizedBox(height: 10), // Her bir öğe arasında boşluk
+            ],
+          );
+        },
+      );
+    }
+  }
+
+  Widget buildRecipeComponent(AiRepcipe recipe) {
+    return Row(
+      children: [
+        Expanded(
+          child: RecipeItem(
+              image: "assets/images/food3.png",
+              title: recipe.name,
+              desc: recipe.description),
+        ),
+      ],
+    );
   }
 }

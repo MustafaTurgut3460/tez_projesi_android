@@ -2,6 +2,8 @@ class Endpoints {
   static String login() => "auth/login";
   static String register() => "auth/register";
   static String addUserInfo() => "User/addPersonalInfo";
+  static String createAiRecipe() => "Ai/createAiRecipe";
+  static String getAiRecipe() => "Ai/getAiRecipes";
 
   static String getFoods({String? searchText, int? page, int? pageSize}) {
     var queryParams = <String, dynamic>{};
